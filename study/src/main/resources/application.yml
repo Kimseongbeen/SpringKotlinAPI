@@ -1,0 +1,31 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      force: true
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/study
+    username: root #실습용
+    password: 690974
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create # 어플이 구동할때 ntt에 해당하는 테이블 만들겠다.
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true #log가 찍힐때 sql이 정리가 돼서 나옴
+        highlight_sql: ture
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    org:
+      hibernate:
+        type.descriptor.sql: trace
+        SQL: debug
