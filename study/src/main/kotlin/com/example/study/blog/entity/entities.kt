@@ -1,4 +1,4 @@
-package com.example.study.blog.dto.entity
+package com.example.study.blog.entity
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
