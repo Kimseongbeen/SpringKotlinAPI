@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class BlogService {
-    fun searchKaKo(blogDto: BlogDto): String? {
+    fun searchKaKao(blogDto: BlogDto): String? {
         println(blogDto.toString())
         return "SearchKaKao"
     }
