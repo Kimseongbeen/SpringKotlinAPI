@@ -14,25 +14,26 @@ class BlogService {
     @Value("\${REST_API_KEY}")
     lateinit var restApiKey: String
     fun searchKaKao(blogDto: BlogDto): String? {
+        //24-03-31 기준 exception처리를 Dto에서 validation으로 처리하는 방식으로 수정.
 //blogDto로 들어온 값에 문제가있는지 확인하는 부분. Exception 전처리
-        val msgList = mutableListOf<ExceptionMsg>()
-        if (blogDto.query.trim().isEmpty()) {
-            msgList.add(ExceptionMsg.EMPTY_QUERY) //EMPTY_QUERY("query parameter required")
-        }
-        if (blogDto.sort.trim() !in arrayOf("accuracy", "recency")) {
-            msgList.add(ExceptionMsg.NOT_IN_SORT) //NOT_IN_SORT("sort parameter one of accuracy and recency")
-        }
-        when {
-            blogDto.page < 1 -> msgList.add(ExceptionMsg.LESS_THAN_MIN) // 1보다 작다면,LESS_THAN_MIN("page is less than min")
-            blogDto.page > 50 -> msgList.add(ExceptionMsg.MORE_THAN_MAX) // 50보다 크다면, MORE_THAN_MAX("page is more than max")
-        }
-
-        // 위에서 문제가 있어서 msgList에 하나라도 데이터가 있다면, 오류 발생이므로 Exception이 동작해야함
-        // msgList가 비어있지 않다면, 존재한다면
-        if (msgList.isNotEmpty()){
-            val message = msgList.joinToString { it.msg } //담긴 내용을 message에 담아서
-            throw InvalidInputException(message) // InvalidInputException에 msgList 내용을 던진다.
-        }
+//        val msgList = mutableListOf<ExceptionMsg>()
+//        if (blogDto.query.trim().isEmpty()) {
+//            msgList.add(ExceptionMsg.EMPTY_QUERY) //EMPTY_QUERY("query parameter required")
+//        }
+//        if (blogDto.sort.trim() !in arrayOf("accuracy", "recency")) {
+//            msgList.add(ExceptionMsg.NOT_IN_SORT) //NOT_IN_SORT("sort parameter one of accuracy and recency")
+//        }
+//        when {
+//            blogDto.page < 1 -> msgList.add(ExceptionMsg.LESS_THAN_MIN) // 1보다 작다면,LESS_THAN_MIN("page is less than min")
+//            blogDto.page > 50 -> msgList.add(ExceptionMsg.MORE_THAN_MAX) // 50보다 크다면, MORE_THAN_MAX("page is more than max")
+//        }
+//
+//        // 위에서 문제가 있어서 msgList에 하나라도 데이터가 있다면, 오류 발생이므로 Exception이 동작해야함
+//        // msgList가 비어있지 않다면, 존재한다면
+//        if (msgList.isNotEmpty()){
+//            val message = msgList.joinToString { it.msg } //담긴 내용을 message에 담아서
+//            throw InvalidInputException(message) // InvalidInputException에 msgList 내용을 던진다.
+//        }
 
         val webClient = WebClient
             .builder()
@@ -58,9 +59,9 @@ class BlogService {
     }
 }
 
-private enum class ExceptionMsg(val msg: String) {
-    EMPTY_QUERY("query parameter required"),
-    NOT_IN_SORT("sort parameter one of accuracy and recency"),
-    LESS_THAN_MIN("page is less than min"),
-    MORE_THAN_MAX("page is more than max")
-}
+//private enum class ExceptionMsg(val msg: String) {
+//    EMPTY_QUERY("query parameter required"),
+//    NOT_IN_SORT("sort parameter one of accuracy and recency"),
+//    LESS_THAN_MIN("page is less than min"),
+//    MORE_THAN_MAX("page is more than max")
+//}
