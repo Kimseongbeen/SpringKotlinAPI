@@ -1,6 +1,8 @@
 package com.example.study.blog.service
 
 import com.example.study.blog.dto.BlogDto
+import com.example.study.blog.entity.Wordcount
+import com.example.study.blog.repository.WordRepository
 import com.example.study.core.exception.InvalidInputException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -10,7 +12,9 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
 
 @Service
-class BlogService {
+class BlogService(
+    val wordRepository: WordRepository
+) {
     @Value("\${REST_API_KEY}")
     lateinit var restApiKey: String
     fun searchKaKao(blogDto: BlogDto): String? {
@@ -55,8 +59,17 @@ class BlogService {
 
         val result = response.block()
 
+        val lowQuery: String = blogDto.query.lowercase() //Dto Query에 있는 값을 소문자로 처리
+        // wordRepository에서 소문자로 변환한 것들을 검색해서, 만약 없다면 인스턴스를 만들어서 저장하게한다.
+        val word: Wordcount = wordRepository.findById(lowQuery).orElse(Wordcount(lowQuery))
+        word.cnt++ // 발견된 것들, repository에 저장할때마다 1을 더한다.
+
+        wordRepository.save(word) // word 에 담겨있는 내용을 wordRepository에 저장한다.
+
         return result
     }
+    fun searchWordRank(): List<Wordcount> = wordRepository.findTop10ByOrderByCntDesc()
+
 }
 
 //private enum class ExceptionMsg(val msg: String) {

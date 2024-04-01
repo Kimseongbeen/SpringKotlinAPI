@@ -9,7 +9,8 @@ import jakarta.validation.constraints.NotNull
 
 data class BlogDto (
     @field:NotBlank(message = "query parameter required")
-    val query: String?,
+    @JsonProperty("query") //JSON에 담긴 query를 _query에 연결한다.
+    private val _query: String?,
 
     @field:NotBlank(message = "sort parameter required")
     @field:ValidEnum(enumClass = EnumSort::class, message = "sort parameter one of ACCURACY and RECENCY")
@@ -24,6 +25,8 @@ data class BlogDto (
     @field:NotNull(message = "size parameter required")
     val size: Int?
 ) {
+    val query: String //해당 query는 string만 올수있고,
+        get() = _query!! //이 query를 호출(GET)할 경우 _query는 절대 Null이 들어올수 없다!
     private enum class EnumSort {
         ACCURACY,
         RECENCY

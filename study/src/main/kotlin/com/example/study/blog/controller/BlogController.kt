@@ -1,6 +1,7 @@
 package com.example.study.blog.controller
 
 import com.example.study.blog.dto.BlogDto
+import com.example.study.blog.entity.Wordcount
 import com.example.study.blog.service.BlogService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,4 +18,6 @@ class BlogController (
         val result = blogService.searchKaKao(blogDto) // 4. 그리고 그 결과 값이 kakaoService에 넘어가고 kakaoservice가 실행됨.
         return result
     }
+    @GetMapping("/rank")
+    fun searchWordRank(): List<Wordcount> = blogService.searchWordRank()
 }
