@@ -6,8 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class StudyApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+    // 애플리케이션 컨텍스트가 로드되는지 테스트합니다.
+    @Test
+    fun contextLoads() {
+    }
 
 }
